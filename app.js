@@ -36,7 +36,8 @@ const words = [
   'loving'
 ];
 
-function showWord() {
+function startGame() {
+  startBtn.textContent = 'Restart Game';
   input.value = '';
 
   randomWord = getRandomWord();
@@ -140,7 +141,7 @@ populateUI(randomWord, totalScore, timeLeft);
 // Event Listeners
 settings.addEventListener('click', () => navbar.classList.toggle('show'));
 
-startBtn.addEventListener('click', showWord);
+startBtn.addEventListener('click', startGame);
 
 selectList.addEventListener('change', updateDifficulty);
 
