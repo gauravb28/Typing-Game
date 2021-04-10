@@ -36,16 +36,21 @@ const words = [
   'loving'
 ];
 
-function startGame() {
-  startBtn.textContent = 'Restart Game';
-  input.value = '';
+function startGame(e) {
+  if(e.target.textContent === 'Start Game') {
+    startBtn.textContent = 'Restart Game';
 
-  randomWord = getRandomWord();
-  setInitialTime();
-
-  populateUI(randomWord, totalScore, timeLeft);
-
-  timeInterval = setInterval(timeReduce, 1000);
+    input.value = '';
+  
+    randomWord = getRandomWord();
+    setInitialTime();
+  
+    populateUI(randomWord, totalScore, timeLeft);
+  
+    timeInterval = setInterval(timeReduce, 1000);
+  } else {
+    window.location.reload();
+  }
 }
 
 // Reduce time left
