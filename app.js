@@ -7,9 +7,12 @@ const input = document.querySelector('input');
 const startBtn = document.querySelector('#start');
 const uiWord = document.querySelector('.word');
 const card = document.querySelector('.card');
+const rulesBtn = document.querySelector('#rules-btn');
+const rulesContainer = document.querySelector('.container');
+const closeBtn = document.querySelector('#close');
 
 let timeInterval;
-let timeLeft;
+let timeLeft = 10;
 let totalScore = 0;
 let randomWord = '';
 
@@ -38,12 +41,14 @@ const words = [
 
 function startGame(e) {
   if(e.target.textContent === 'Start Game') {
+    timeLeft = 10;
+
     startBtn.textContent = 'Restart Game';
+    startBtn.style.backgroundColor = '#d9534f';
 
     input.value = '';
   
     randomWord = getRandomWord();
-    setInitialTime();
   
     populateUI(randomWord, totalScore, timeLeft);
   
@@ -66,7 +71,7 @@ function timeReduce() {
 
 // Update Difficulty
 function updateDifficulty() {
-  setInitialTime();
+  timeLeft = 10;
   totalScore = 0;
   randomWord = '';
   
@@ -102,17 +107,6 @@ function newWord() {
   }
 }
 
-// Calculate initial time
-function setInitialTime() {
-  if(selectList.value === 'easy') {
-    timeLeft = 15;
-  } else if(selectList.value === 'medium') {
-    timeLeft = 12;
-  } else {
-    timeLeft = 8;
-  }
-}
-
 // Update time
 function updateTime() {
   if(selectList.value === 'easy') {
@@ -139,12 +133,15 @@ function populateUI(word, score, time) {
 
 
 // App
-setInitialTime();
 populateUI(randomWord, totalScore, timeLeft);
 
 
 // Event Listeners
 settings.addEventListener('click', () => navbar.classList.toggle('show'));
+
+rulesBtn.addEventListener('click', () => rulesContainer.classList.add('show'));
+
+closeBtn.addEventListener('click', () => rulesContainer.classList.remove('show'));
 
 startBtn.addEventListener('click', startGame);
 
