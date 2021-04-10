@@ -129,5 +129,6 @@ select:focus {
 @media (max-width: 400px) {
   .card {
     margin: 25vh auto;
+    width: 100vw;
   }
 }
