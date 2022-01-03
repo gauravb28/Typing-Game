@@ -13,16 +13,29 @@
   </head>
   <body>
     <nav id="navbar" class="show">
-      <label>Difficulty</label>
-      <select>
-        <option value="easy">Easy</option>
-        <option value="medium" selected>Medium</option>
-        <option value="hard">Hard</option>
-      </select>
+      <div class="settings">
+        <div>
+          <label>Difficulty</label>
+          <select>
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+        <div class="buttons">
+          <button class="btn" id="leaderboard-btn">
+            <i class="fas fa-list-ol"></i>
+          </button>
+          <button class="btn" id="rules-btn">
+            <i class="fas fa-info"></i>
+          </button>
+        </div>
+      </div>
+      <div class="settings-toggle"><i class="fas fa-chevron-up"></i></div>
     </nav>
 
     <div class="card">
-      <h1>👩‍💻 Speed Typer 👨‍💻</h1>
+      <h1>Speed Typer</h1>
       <div id="info">
         <p>Time Left: <span class="time"></span>s</p>
         <p>Score: <span class="score"></span></p>
@@ -40,12 +53,9 @@
       <button class="btn" id="start">Start Game</button>
     </div>
 
-    <button class="btn" id="settings"><i class="fas fa-cog"></i></button>
-    <button class="btn" id="rules-btn"><i class="fas fa-info"></i></button>
-
     <div class="container">
       <div id="rules" class="rules">
-        <button id="close" class="btn"><i class="fas fa-times"></i></button>
+        <button class="btn close"><i class="fas fa-times"></i></button>
         <h3>Rules</h3>
         <p>The timer starts at 10 seconds</p>
         <p>
@@ -58,7 +68,29 @@
           <li>Medium: 2 seconds</li>
           <li>Hard: 1 second</li>
         </ul>
+        <p>Also the range of diversity of words increases with difficulty</p>
         <p>Aim is to score as high as possible. GOOD LUCK!!!</p>
+      </div>
+    </div>
+
+    <div class="container-2">
+      <div id="leaderboard">
+        <button class="btn close-2"><i class="fas fa-times"></i></button>
+        <h3>High Scores</h3>
+        <div class="scores">
+          <div class="score-entry score-head">Difficulty</div>
+          <div class="score-entry score-head">Score</div>
+          <div class="score-entry score-head">Date</div>
+          <div class="score-entry">Easy</div>
+          <div class="score-entry">143</div>
+          <div class="score-entry">28/06/2021</div>
+          <div class="score-entry">Medium</div>
+          <div class="score-entry">63</div>
+          <div class="score-entry">18/11/2021</div>
+          <div class="score-entry">Hard</div>
+          <div class="score-entry">44</div>
+          <div class="score-entry">02/01/2022</div>
+        </div>
       </div>
     </div>
 

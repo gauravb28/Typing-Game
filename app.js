@@ -1,4 +1,4 @@
-const settings = document.querySelector('#settings');
+const settingsToggle = document.querySelector('.settings-toggle');
 const navbar = document.querySelector('#navbar');
 const uiTime = document.querySelector('.time');
 const uiScore = document.querySelector('.score');
@@ -8,50 +8,47 @@ const startBtn = document.querySelector('#start');
 const uiWord = document.querySelector('.word');
 const card = document.querySelector('.card');
 const rulesBtn = document.querySelector('#rules-btn');
+const leaderboardBtn = document.querySelector('#leaderboard-btn');
 const rulesContainer = document.querySelector('.container');
-const closeBtn = document.querySelector('#close');
+const leaderboardContainer = document.querySelector('.container-2');
+const closeBtn = document.querySelector('.close');
+const closeBtn2 = document.querySelector('.close-2');
 
 let timeInterval;
 let timeLeft = 10;
 let totalScore = 0;
 let randomWord = '';
 
-const words = [
-  'sigh',
-  'tense',
-  'airplane',
-  'ball',
-  'pies',
-  'juice',
-  'warlike',
-  'bad',
-  'north',
-  'dependent',
-  'steer',
-  'silver',
-  'highfalutin',
-  'superficial',
-  'quince',
-  'eight',
-  'feeble',
-  'admit',
-  'drag',
-  'loving'
-];
+let words = [];
+
+async function getWords() {
+  let numFetch = 3000;
+  if (selectList.value === 'medium') {
+    numFetch = 2000;
+  } else if (selectList.value === 'easy') {
+    numFetch = 1000;
+  }
+
+  const res = await fetch(
+    `https://random-word-api.herokuapp.com/word?number=${numFetch}`
+  );
+  const data = await res.json();
+  words = data;
+}
 
 function startGame(e) {
-  if(e.target.textContent === 'Start Game') {
+  if (e.target.textContent === 'Start Game') {
     timeLeft = 10;
 
     startBtn.textContent = 'Restart Game';
     startBtn.style.backgroundColor = '#d9534f';
 
     input.value = '';
-  
+
     randomWord = getRandomWord();
-  
+
     populateUI(randomWord, totalScore, timeLeft);
-  
+
     timeInterval = setInterval(timeReduce, 1000);
   } else {
     window.location.reload();
@@ -61,7 +58,7 @@ function startGame(e) {
 // Reduce time left
 function timeReduce() {
   timeLeft--;
-  if(timeLeft > 0) {
+  if (timeLeft > 0) {
     populateUI(randomWord, totalScore, timeLeft);
   } else {
     clearInterval(timeInterval);
@@ -71,10 +68,11 @@ function timeReduce() {
 
 // Update Difficulty
 function updateDifficulty() {
+  getWords();
   timeLeft = 10;
   totalScore = 0;
   randomWord = '';
-  
+
   populateUI(randomWord, totalScore, timeLeft);
 }
 
@@ -89,7 +87,7 @@ function changeState() {
 
 // Replay game
 function replayGame(e) {
-  if(e.target.classList.contains('play-again')) {
+  if (e.target.classList.contains('play-again')) {
     window.location.reload();
   }
 }
@@ -98,7 +96,7 @@ function replayGame(e) {
 function newWord() {
   const inputWord = input.value;
 
-  if(inputWord === randomWord && inputWord !== '') {
+  if (inputWord === randomWord && inputWord !== '') {
     totalScore++;
     updateTime();
     randomWord = getRandomWord();
@@ -109,9 +107,9 @@ function newWord() {
 
 // Update time
 function updateTime() {
-  if(selectList.value === 'easy') {
+  if (selectList.value === 'easy') {
     timeLeft += 3;
-  } else if(selectList.value === 'medium') {
+  } else if (selectList.value === 'medium') {
     timeLeft += 2;
   } else {
     timeLeft += 1;
@@ -131,17 +129,29 @@ function populateUI(word, score, time) {
   uiScore.innerText = score;
 }
 
-
 // App
+getWords();
 populateUI(randomWord, totalScore, timeLeft);
 
-
 // Event Listeners
-settings.addEventListener('click', () => navbar.classList.toggle('show'));
+settingsToggle.addEventListener('click', () => {
+  navbar.classList.toggle('show');
+  settingsToggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
+});
 
 rulesBtn.addEventListener('click', () => rulesContainer.classList.add('show'));
 
-closeBtn.addEventListener('click', () => rulesContainer.classList.remove('show'));
+leaderboardBtn.addEventListener('click', () =>
+  leaderboardContainer.classList.add('show')
+);
+
+closeBtn.addEventListener('click', () =>
+  rulesContainer.classList.remove('show')
+);
+
+closeBtn2.addEventListener('click', () =>
+  leaderboardContainer.classList.remove('show')
+);
 
 startBtn.addEventListener('click', startGame);
 
