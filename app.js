@@ -13,6 +13,7 @@ const rulesContainer = document.querySelector('.container');
 const leaderboardContainer = document.querySelector('.container-2');
 const closeBtn = document.querySelector('.close');
 const closeBtn2 = document.querySelector('.close-2');
+const scoresEl = document.querySelector('.scores');
 
 let timeInterval;
 let timeLeft = 10;
@@ -63,6 +64,7 @@ function timeReduce() {
   } else {
     clearInterval(timeInterval);
     changeState();
+    updateLeaderboard();
   }
 }
 
@@ -122,6 +124,68 @@ function getRandomWord() {
   return word;
 }
 
+// Get high scores from Local Storage
+function getLeaderboard() {
+  let highScores = [
+    {
+      easy: [0, null],
+    },
+    {
+      medium: [0, null],
+    },
+    {
+      hard: [0, null],
+    },
+  ];
+  if (localStorage.getItem('scores') !== null) {
+    highScores = JSON.parse(localStorage.getItem('scores'));
+  }
+  return highScores;
+}
+
+// Update high scores in local storage
+function updateLeaderboard() {
+  const currScores = getLeaderboard();
+
+  if (selectList.value === 'easy' && totalScore > currScores[0].easy[0]) {
+    currScores[0].easy[0] = totalScore;
+    currScores[0].easy[1] = moment().format('MMM Do YY');
+  } else if (
+    selectList.value === 'medium' &&
+    totalScore > currScores[1].medium[0]
+  ) {
+    currScores[1].medium[0] = totalScore;
+    currScores[1].medium[1] = moment().format('MMM Do YY');
+  } else if (
+    selectList.value === 'hard' &&
+    totalScore > currScores[2].hard[0]
+  ) {
+    currScores[2].hard[0] = totalScore;
+    currScores[2].hard[1] = moment().format('MMM Do YY');
+  }
+
+  localStorage.setItem('scores', JSON.stringify(currScores));
+}
+
+// Populate Leaderboard
+function populateLeaderboard() {
+  const highScores = getLeaderboard();
+  scoresEl.innerHTML = `
+    <div class="score-entry score-head">Difficulty</div>
+    <div class="score-entry score-head">Score</div>
+    <div class="score-entry score-head">Date</div>
+    <div class="score-entry">Easy</div>
+    <div class="score-entry">${highScores[0].easy[0]}</div>
+    <div class="score-entry">${highScores[0].easy[1] || 'Never Played'}</div>
+    <div class="score-entry">Medium</div>
+    <div class="score-entry">${highScores[1].medium[0]}</div>
+    <div class="score-entry">${highScores[1].medium[1] || 'Never Played'}</div>
+    <div class="score-entry">Hard</div>
+    <div class="score-entry">${highScores[2].hard[0]}</div>
+    <div class="score-entry">${highScores[2].hard[1] || 'Never Played'}</div>
+  `;
+}
+
 // Populate UI
 function populateUI(word, score, time) {
   uiWord.innerText = word;
@@ -141,9 +205,10 @@ settingsToggle.addEventListener('click', () => {
 
 rulesBtn.addEventListener('click', () => rulesContainer.classList.add('show'));
 
-leaderboardBtn.addEventListener('click', () =>
-  leaderboardContainer.classList.add('show')
-);
+leaderboardBtn.addEventListener('click', () => {
+  populateLeaderboard();
+  leaderboardContainer.classList.add('show');
+});
 
 closeBtn.addEventListener('click', () =>
   rulesContainer.classList.remove('show')
