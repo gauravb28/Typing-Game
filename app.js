@@ -124,6 +124,15 @@ function getRandomWord() {
   return word;
 }
 
+// Set Toggle Icon
+function setToggleIcon() {
+  if (navbar.classList.contains('show')) {
+    settingsToggle.innerHTML = '<i class="fas fa-chevron-up"></i>';
+  } else {
+    settingsToggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
+  }
+}
+
 // Get high scores from Local Storage
 function getLeaderboard() {
   let highScores = [
@@ -200,7 +209,7 @@ populateUI(randomWord, totalScore, timeLeft);
 // Event Listeners
 settingsToggle.addEventListener('click', () => {
   navbar.classList.toggle('show');
-  settingsToggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
+  setToggleIcon();
 });
 
 rulesBtn.addEventListener('click', () => rulesContainer.classList.add('show'));
